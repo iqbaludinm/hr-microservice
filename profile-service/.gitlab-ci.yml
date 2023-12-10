@@ -1,0 +1,16 @@
+#
+# GitLab CI/CD Scripts V2
+# by DevOps Team Synapsis.id
+#
+
+stages:
+- build
+- test
+- deploy
+
+include:
+- 'ci/gitlab/app-config.gitlab-ci.yml'
+- 'ci/gitlab/default-config.gitlab-ci.yml'
+- 'ci/gitlab/job-build.gitlab-ci.yml'
+- 'ci/gitlab/job-scan.gitlab-ci.yml'
+- 'ci/gitlab/job-deploy.gitlab-ci.yml'
