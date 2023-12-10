@@ -12,6 +12,7 @@ import (
 type AuthQuery interface {
 	Register(c context.Context, tx pgx.Tx, user domain.User) (string, error)
 	Login(c context.Context, tx pgx.Tx, id string) (domain.User, error)
+	UpdateUser(c context.Context, tx pgx.Tx, id string, user domain.User) error
 	UpdatePassword(c context.Context, tx pgx.Tx, user domain.User) error
 	FindUserNotDeleteByQuery(c context.Context, db *pgxpool.Pool, query, value string) (domain.User, error) // forgot-pass
 	CheckTokenWithQuery(ctx context.Context, db pgx.Tx, query, value string) (domain.ResetPasswordToken, error)
@@ -90,6 +91,15 @@ func (repository *AuthQueryImpl) UpdatePassword(c context.Context, tx pgx.Tx, us
 	return nil
 }
 
+func (repository *AuthQueryImpl) UpdateUser(c context.Context, tx pgx.Tx, id string, user domain.User) error {
+	// build UPDATE query
+	query := fmt.Sprintf("UPDATE %s SET name=$1, email=$2, phone=$3, updated_at=$4 WHERE id=$5", "users")
+
+	_, err := tx.Exec(c, query, user.Name, user.Email, user.Phone, user.UpdatedAt, id)
+
+	return err
+}
+
 // func (repository *AuthQueryImpl) FindUserWithNameNotDeleteByQuery(ctx context.Context, db pgx.Tx, query, value string) (domain.UserWithName, error) {
 // 	queryStr := fmt.Sprintf(`SELECT u.*, coalesce(r.name,''), coalesce(d.name,''), coalesce(p.name,''), coalesce(pst.name,'') FROM %s u
 // 	LEFT JOIN roles r ON u.role_id = r.id
@@ -123,11 +133,6 @@ func (repository *AuthQueryImpl) CheckTokenWithQuery(ctx context.Context, db pgx
 
 	var data domain.ResetPasswordToken
 	err := user.Scan(&data.Id, &data.Tokens, &data.Email, &data.Attempt, &data.LastAttempt)
-	fmt.Println("DIBAWAH INI ADA DATA CHECKTOKENWITHQUERY")
-	fmt.Println(queryStr)
-	fmt.Println(user)
-	fmt.Println(data)
-	fmt.Println(err)
 	if err != nil {
 		return domain.ResetPasswordToken{}, err
 	}

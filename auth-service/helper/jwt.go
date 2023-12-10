@@ -13,15 +13,17 @@ type Claims struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
 	Phone string `json:"phone"`
+	Password string `json:"password"`
 	jwt.StandardClaims
 }
 
-func GenerateJwt(issuer, name, email, phone string) (string, error) {
+func GenerateJwt(issuer, name, email, phone, password string) (string, error) {
 	session, _ := strconv.Atoi(config.SessionLogin)
 	claims := &Claims{
 		Name: name,
 		Email: email,
 		Phone: phone,
+		Password: password,
 		StandardClaims: jwt.StandardClaims{
 			Issuer:    issuer,
 			ExpiresAt: time.Now().Add(time.Hour * time.Duration(session)).Unix(),

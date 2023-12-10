@@ -50,7 +50,7 @@ func (controller *authController) Route(app *fiber.App) {
 			Message: "ok",
 		})
 	})
-	api := app.Group(config.EndpointPrefixJob)
+	api := app.Group(config.EndpointPrefixAuth)
 	api.Post("/register", controller.Register)
 	api.Post("/login", controller.Login)
 	api.Post("/forget-password", controller.ForgetPassword)

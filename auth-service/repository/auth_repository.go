@@ -18,7 +18,7 @@ type AuthRepository interface {
 	CheckTokenWithQueryTx(ctx context.Context, query, value string) (domain.ResetPasswordToken, error)
 	AddTokenTx(ctx context.Context, token domain.ResetPasswordToken) error
 	UpdateTokenTx(ctx context.Context, token domain.ResetPasswordToken) error
-
+	UpdateUser(c context.Context, id string, user domain.User) error
 	// -1
 	// FindUserWithNameNotDeleteByQueryTx(ctx context.Context, query, value string) (domain.UserWithName, error)
 	// FindProjectByIdTx(ctx context.Context, id int) (domain.Project, error)
@@ -173,6 +173,22 @@ func (r *authRepository) UpdateTokenTx(ctx context.Context, token domain.ResetPa
 
 	return err
 }
+
+func (r *authRepository) UpdateUser(c context.Context, id string, user domain.User) error {
+	var err error
+
+	// create transaction to update user
+	err = r.db.WithTransaction(c, func(tx pgx.Tx) error {
+		// update user id, if error will rollback
+		if err = r.AuthQuery.UpdateUser(c, tx, id, user); err != nil {
+			return err
+		}
+		return nil
+	})
+
+	return err
+}
+
 
 // // Project
 // func (r *AuthRepositoryImpl) FindProjectByIdTx(ctx context.Context, id int) (domain.Project, error) {

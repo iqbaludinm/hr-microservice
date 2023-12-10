@@ -65,11 +65,8 @@ func (s *kafkaAuthConsumerService) Update(message []byte) error {
 		ID:          userMsg.ID,
 		Name:         userMsg.Name,
 		Email:        userMsg.Email,
-		Password:     userMsg.Password,
 		Phone:        userMsg.Phone,
-		CreatedAt:    userMsg.CreatedAt,
 		UpdatedAt:    userMsg.UpdatedAt,
-		DeletedAt:    userMsg.DeletedAt,
 	}
 
 	// update user

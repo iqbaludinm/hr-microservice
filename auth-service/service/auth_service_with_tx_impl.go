@@ -97,7 +97,7 @@ func (service *authService) Login(ctx *fiber.Ctx, request web.LoginRequest) (fib
 		return fiber.Cookie{}, web.LoginResponse{}, exception.ErrBadRequest("Password salah.")
 	}
 
-	token, err := helper.GenerateJwt(user.ID, user.Name, user.Email, user.Phone)
+	token, err := helper.GenerateJwt(user.ID, user.Name, user.Email, user.Phone, user.Password)
 	if err != nil {
 		return fiber.Cookie{}, web.LoginResponse{}, exception.ErrBadRequest(err.Error())
 	}
@@ -207,12 +207,10 @@ func (service *authService) ResetPassword(ctx *fiber.Ctx, email, token string, r
 	checkToken, err := service.authRepository.CheckTokenWithQueryTx(ctx.Context(), "tokens", token)
 
 	if err != nil {
-		log.Println("di token invalid 1")
 		return exception.ErrBadRequest("Token invalid.")
 	}
 	
 	if checkToken.Tokens != token || checkToken.Email != email {
-		log.Println("di token invalid 2")
 		return exception.ErrBadRequest("Token invalid.")
 	}
 
