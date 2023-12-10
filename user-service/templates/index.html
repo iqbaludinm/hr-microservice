@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style type="text/css">
+    @media print {
+      body {
+        zoom: 80%;
+      }
+    }
+    .tg {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    .tg td {
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      overflow: hidden;
+      padding: 10px 5px;
+      word-break: normal;
+    }
+    .tg th {
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: normal;
+      overflow: hidden;
+      padding: 10px 5px;
+      word-break: normal;
+    }
+    .tg .tg-lboi {
+      border-color: inherit;
+      text-align: left;
+      vertical-align: middle;
+    }
+    .tg .tg-0pky {
+      border-color: inherit;
+      text-align: left;
+      vertical-align: top;
+    }
+    .tg .tg-4hvc {
+      border-color: inherit;
+      font-size: 24px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .tg .tg-8hvc {
+      border-color: inherit;
+      font-size: 32px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      padding-top: 32px;
+    }
+  </style>
+  <body>
+    <table class="tg" style="table-layout: fixed; width: 900px">
+      <colgroup>
+        <col style="width: 25px" />
+        <col style="width: 68px" />
+        <col style="width: 53px" />
+        <col style="width: 72px" />
+        <col style="width: 107px" />
+        <col style="width: 66px" />
+        <col style="width: 225px" />
+        <col style="width: 273px" />
+        <col style="width: 25px" />
+        <col style="width: 129px" />
+        <col style="width: 25px" />
+        <col style="width: 116px" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="tg-0pky" colspan="3" rowspan="4">
+            <img src="https://assets.apps-madhani.com/madhani001m/logo/logo-madhani.png" alt="logo madhani" class="center">
+          </th>
+          <th class="tg-4hvc" colspan="5">
+            <span style="font-weight: bold">FORMULIR</span>
+          </th>
+          <th class="tg-0pky" colspan="2">No,Dok</th>
+          <th class="tg-0pky" colspan="2">CORP-SUPCM/F0006</th>
+        </tr>
+        <tr>
+          <th class="tg-8hvc" colspan="5" rowspan="3">
+            <span style="font-weight: bold">REQUEST FORM</span>
+          </th>
+          <th class="tg-0pky" colspan="2">Tanggal terbit</th>
+          <th class="tg-0pky" colspan="2">01 Oktober 2019</th>
+        </tr>
+        <tr>
+          <th class="tg-0pky" colspan="2">Revisi</th>
+          <th class="tg-0pky" colspan="2">2</th>
+        </tr>
+        <tr>
+          <th class="tg-0pky" colspan="2">Halaman</th>
+          <th class="tg-0pky" colspan="2">1</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-0pky" colspan="4">DATE REQUEST</td>
+          <td class="tg-lboi" colspan="3">{{ index .DateMap "date-request" }}</td>
+          <td class="tg-0pky"></td>
+          <td class="tg-0pky" colspan="2">REQUEST FORM NUMBER</td>
+          <td class="tg-0pky" colspan="2"></td>
+        </tr>
+        <tr>
+          <td class="tg-0pky" colspan="4">PROJECT CODE</td>
+          <td class="tg-0pky" colspan="2"></td>
+          <td class="tg-0pky">PROJECT NAME</td>
+          <td class="tg-0pky"></td>
+          <td class="tg-0pky" colspan="2">ASSET/UNIT CODE</td>
+          <td class="tg-0pky" colspan="2"></td>
+        </tr>
+        <tr>
+          <td class="tg-lboi" colspan="4" rowspan="3">
+            DESCRIPTION / USED FOR
+          </td>
+          <td class="tg-0pky" colspan="8" rowspan="3"></td>
+        </tr>
+        <tr></tr>
+        <tr></tr>
+        <tr>
+          <td class="tg-0pky" colspan="4">WORK ORDER NUMBER</td>
+          <td class="tg-0pky" colspan="2">{{ index .JobMap "workorder-number" }}</td>
+          <td class="tg-0pky">COST GROUP</td>
+          <td class="tg-0pky"></td>
+          <td class="tg-0pky" colspan="2">ESTIMATED COST</td>
+          <td class="tg-0pky" colspan="2"></td>
+        </tr>
+        <tr>
+          <td class="tg-0pky" colspan="4" rowspan="3">
+            ADDITIONAL INFORMATION NEEDED
+          </td>
+          <td class="tg-0pky" colspan="8" rowspan="3"></td>
+        </tr>
+        <tr></tr>
+        <tr></tr>
+      </tbody>
+    </table>
+    <table
+      class="tg"
+      style="table-layout: fixed; width: 1000px; margin-top: 15px"
+    >
+      <colgroup>
+        <col style="width: 53px" />
+        <col style="width: 363px" />
+        <col style="width: 363px" />
+        <col style="width: 51px" />
+        <col style="width: 86px" />
+        <col style="width: 268px" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="tg-baqh">NO</th>
+          <th class="tg-baqh">PART NUMBER</th>
+          <th class="tg-baqh">DESCRIPTION</th>
+          <th class="tg-baqh">QTY</th>
+          <th class="tg-baqh">UOM</th>
+          <th class="tg-baqh">REMARKS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range $index, $item := .RFList }}
+        <tr>
+          <td class="tg-0lax">{{ $index | add }}</td>
+          <td class="tg-0lax">{{ $item.PartNumber }}</td>
+          <td class="tg-0lax">{{ $item.Description }}</td>
+          <td class="tg-0lax">{{ $item.Quantity }}</td>
+          <td class="tg-0lax"></td>
+          <td class="tg-0lax"></td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  </body>
+</html>

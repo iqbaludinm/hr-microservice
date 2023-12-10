@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <style type="text/css">
+    @media print {
+      body {
+        zoom: 97%;
+      }
+    }
+    .tg {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    .tg td {
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      overflow: hidden;
+      padding: 10px 5px;
+      word-break: normal;
+    }
+    .tg th {
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: normal;
+      overflow: hidden;
+      padding: 10px 5px;
+      word-break: normal;
+    }
+    .tg .tg-baqh {
+      text-align: center;
+      vertical-align: top;
+    }
+    .tg .tg-o4og {
+      font-size: 22px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .tg .tg-0lax {
+      text-align: left;
+      vertical-align: top;
+    }
+    .tg .tg-02ax {
+      text-align: left;
+    }
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      padding-top: 32px;
+    }
+    .test {
+      border-color:inherit;
+      text-align:center;
+      vertical-align:top
+    }
+
+  </style>
+  <table class="tg" style="table-layout: fixed; width: 900px">
+    <colgroup>
+      <col style="width: 145px" />
+      <col style="width: 650px" />
+      <col style="width: 157px" />
+      <col style="width: 157px" />
+    </colgroup>
+    <thead>
+      <tr>
+        <td class="tg-0lax" rowspan="4">
+          <img src="https://assets.apps-madhani.com/madhani001m/logo/logo-madhani.png" alt="logo madhani" class="center">
+        </td>
+        <td class="tg-baqh"><span style="font-weight: bold">FORMULIR</span></td>
+        <td class="tg-0lax">Nomor Dokumen</td>
+        <td class="tg-0lax">001M/PLANT/F-0028</td>
+      </tr>
+      <tr>
+        <td class="tg-o4og" rowspan="3">
+          <span style="font-weight: bold">BERITA ACARA SERAH TERIMA</span
+          ><br /><span style="font-weight: bold"
+            >MADHANI KOMPONEN ROUTABLE</span
+          >
+        </td>
+        <td class="tg-0lax">Tanggal Efektif</td>
+        <td class="tg-0lax">1 Mei 2023</td>
+      </tr>
+      <tr>
+        <td class="tg-0lax">Revisi</td>
+        <td class="tg-0lax">0</td>
+      </tr>
+      <tr>
+        <td class="tg-0lax">Halaman</td>
+        <td class="tg-0lax">1 dari 2</td>
+      </tr>
+    </thead>
+  </table>
+  <div
+    style="
+      padding: 25px;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      flex-direction: column;
+    "
+  >
+    <div><span>BAST NO.</span><span style="margin-left: 44px">:  BAST/{{ index .JobMap "sn-routable" }}/MTNR-001M/{{ index .DateMap "month" }}/{{ index .DateMap "year" }}</span></div>
+    <div style="margin-top: 20px">
+      <span>TANGGAL</span><span style="margin-left: 43px">:  {{ index .DateMap "date-request" }}</span>
+    </div>
+    <div style="margin-top: 20px">
+      <span>LOKASI</span><span style="margin-left: 60px">:  001M PLANT REBUILD</span>
+    </div>
+  </div>
+  <div style="border: groove; width: 1107px;">
+    <div style="padding: 25px">
+      <span style="font-size: 15px; font-family: Arial, Helvetica, sans-serif"
+        >Berdasarkan hasil pengujian dan final inspection yang di lakukan, maka
+        kami Plant Departement 001M Balikpapan Rebuild Center memberitahukan
+        bahwa komponen dibawah ini sudah selesai di bangun ulang dan siap
+        digunakan :</span
+      >
+    </div>
+    <div style="padding-left: 23px">
+      <table
+        style="
+          table-layout: fixed;
+          width: 648px;
+          font-family: Arial, Helvetica, sans-serif;
+        "
+      >
+        <colgroup>
+          <col style="width: 247px" />
+          <col style="width: 401px" />
+        </colgroup>
+        <tbody>
+          <tr>
+            <td>MTNR - S/N ROUTABLE</td>
+            <td>:  {{ index .JobMap "sn-routable" }}</td>
+          </tr>
+          <tr>
+            <td>MODEL</td>
+            <td>:  {{ index .JobMap "model" }}</td>
+          </tr>
+          <tr>
+            <td>MTNR PART NUMBER</td>
+            <td>:  {{ index .JobMap "part-number" }}</td>
+          </tr>
+          <tr>
+            <td>COMPONENT DESCRIPTION</td>
+            <td>:  {{ index .JobMap "component-description" }}</td>
+          </tr>
+          <tr>
+            <td>001M WORK ORDER NO.</td>
+            <td>:  {{ index .JobMap "workorder-number" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding: 25px">
+      <table class="tg" style="table-layout: fixed; width: 900px">
+        <colgroup>
+          <col style="width: 120px" />
+          <col style="width: 160px" />
+          <col style="width: 270px" />
+          <col style="width: 45px" />
+          <col style="width: 156px" />
+          <col style="width: 130px" />
+          <col style="width: 180px" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="tg-baqh">
+              <span style="font-weight: bold">Item Number</span>
+            </th>
+            <th class="tg-baqh">
+              <span style="font-weight: bold">External Item Number</span>
+            </th>
+            <th class="tg-baqh">
+              <span style="font-weight: bold">Item Name</span>
+            </th>
+            <th class="tg-baqh"><span style="font-weight: bold">Qty</span></th>
+            <th class="tg-baqh">
+              <span style="font-weight: bold">PO No.</span>
+            </th>
+            <th class="tg-baqh">
+              <span style="font-weight: bold">PO Status</span>
+            </th>
+            <th class="tg-baqh">
+              <span style="font-weight: bold">PO Value</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tg-02ax" rowspan={{ index .JobMap "bast-data-count" }}>{{ index .JobMap "item-number" }}</td>
+            <td class="tg-02ax" rowspan={{ index .JobMap "bast-data-count" }}>{{ index .JobMap "part-number" }}</td>
+            <td class="tg-02ax" rowspan={{ index .JobMap "bast-data-count" }}>{{ index .JobMap "component-description" }}</td>
+            <td class="tg-02ax" rowspan={{ index .JobMap "bast-data-count" }}></td>
+          </tr>
+          {{ range $index, $item := .BASTList }}
+          <tr>
+            <td class="tg-0lax">{{ $item.Number }}</td>
+            <td class="tg-0lax">{{ $item.Status }}</td>
+            <td class="tg-0lax">{{ $item.Value }}</td>
+          </tr>
+          {{ end }}
+          <tr>
+            <td class="tg-0lax" colspan="4"></td>
+            <td class="tg-baqh">
+              <span style="font-weight: bold">WH Stock Issued</span>
+            </td>
+            <td class="tg-0lax"></td>
+            <td class="tg-0lax"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      style="
+        margin-left: 624px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: small;
+        display: flex;
+        flex-direction: column;
+      "
+    >
+      <span>TOTAL COST REBUILD IDR</span>
+      <span style="margin-top: 15px;">TOTAL COST REBUILD USD</span>
+    </div>
+    <div style="padding-left: 23px; font-family: Arial, Helvetica, sans-serif;font-size: small;margin-top: 20px;">
+      <span>Dengan ini Plant 001M menyerahkan komponen routable kepada SCM 001M sebagai inventory 001M</span>
+    </div>
+   <div style="padding-left: 22px; margin-bottom: 85px;">
+      <table style="table-layout: fixed; width: 1072px">
+        <colgroup>
+          <col style="width: 256px">
+          <col style="width: 256px">
+          <col style="width: 311px">
+          <col style="width: 249px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="tg-0pky" colspan="3"></th>
+            <th class="test">{{ index .DateMap "received-at" }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="test">Di buat oleh</td>
+            <td class="test">Di periksa oleh</td>
+            <td class="test">Di setujui</td>
+            <td class="test">Yang menerima</td>
+          </tr>
+          <tr>
+            <td class="test"><span style="font-weight:bold">PLANT 001M</span></td>
+            <td class="test"><span style="font-weight:bold">PLANT 001M</span></td>
+            <td class="test"></td>
+            <td class="test"><span style="font-weight:bold">SCM 001M</span></td>
+          </tr>
+        </tbody>
+      </table>
+   </div>
+    <div style="padding-left: 22px; margin-bottom: 20px;">
+        <table style="table-layout: fixed; width: 1072px">
+          <colgroup>
+            <col style="width: 256px">
+            <col style="width: 256px">
+            <col style="width: 311px">
+            <col style="width: 249px">
+          </colgroup>
+          <thead>
+            <tr>
+              <td class="test">{{ index .JobMap "admin" }}</td>
+              <td class="test">{{ index .JobMap "superintendent" }}</td>
+              <td class="test">{{ index .JobMap "superuser" }}</td>
+              <td class="test">{{ index .JobMap "scm" }}</td>
+            </tr>
+          </thead>
+        </table>
+    </div>
+  </div>
+</html>
