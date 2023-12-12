@@ -11,7 +11,8 @@ import (
 func IsAuthenticated(c *fiber.Ctx) error {
 	cookie := c.Cookies("token") // ambil token di cookies, dengan key "token"
 
-	if _, err := helper.ParseJwt(cookie); err != nil {
+	issuer, err := helper.ParseJwt(cookie)
+	if err != nil {
 		if strings.Contains(err.Error(), "token is expired") {
 			return c.Status(401).JSON(web.WebResponse{
 				Code:    99281,
@@ -26,5 +27,6 @@ func IsAuthenticated(c *fiber.Ctx) error {
 		})
 	}
 
+	c.Locals("issuer", issuer)
 	return c.Next()
 }

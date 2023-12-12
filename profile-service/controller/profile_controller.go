@@ -18,6 +18,8 @@ import (
 type ProfileController interface {
 	Route(app *fiber.App)
 	UpdateMyProfile(ctx *fiber.Ctx) error
+	ForgetPassword(ctx *fiber.Ctx) error
+	ResetPassword(ctx *fiber.Ctx) error
 }
 
 type profileController struct {
@@ -44,6 +46,8 @@ func (controller *profileController) Route(app *fiber.App) {
 	})
 	api := app.Group(config.EndpointPrefixProfile, middleware.IsAuthenticated)
 	api.Put("/:profile_id", controller.UpdateMyProfile)
+	api.Post("/forget-password", controller.ForgetPassword)
+	api.Post("/reset-password", controller.ResetPassword)
 }
 
 func (controller *profileController) UpdateMyProfile(ctx *fiber.Ctx) error {
@@ -82,5 +86,54 @@ func (controller *profileController) UpdateMyProfile(ctx *fiber.Ctx) error {
 		Status:  true,
 		Message: "success",
 		Data:    profileResponse,
+	})
+}
+
+func (controller *profileController) ForgetPassword(ctx *fiber.Ctx) error {
+	var data web.ForgetPassword
+	_ = ctx.BodyParser(&data)
+
+	result, err := controller.profileService.ForgetPasswordEmail(ctx, data.Email)
+	if err != nil {
+		return exception.ErrorHandler(ctx, err)
+	}
+
+	return ctx.Status(fiber.StatusOK).JSON(web.WebResponse{
+		Code:    fiber.StatusOK,
+		Status:  true,
+		Message: "Reset password has been sent.",
+		Data: result,
+	})
+}
+
+func (controller *profileController) ResetPassword(ctx *fiber.Ctx) error {
+	email := ctx.Query("email")
+	token := ctx.Query("token")
+
+	if len(token) == 0 {
+		return exception.ErrorHandler(ctx, exception.ErrBadRequest("Token missing."))
+	}
+	if len(email) == 0 {
+		return exception.ErrorHandler(ctx, exception.ErrBadRequest("Email missing."))
+	}
+
+	var data web.ResetPassword
+	_ = ctx.BodyParser(&data)
+
+	// validate password field on req body
+	err := controller.validate.Struct(&data)
+	if err != nil {
+		return exception.ErrValidateBadRequest(err.Error(), data)
+	}
+
+	err = controller.profileService.ResetPassword(ctx, email, token, data)
+	if err != nil {
+		return exception.ErrorHandler(ctx, err)
+	}
+
+	return ctx.Status(fiber.StatusOK).JSON(web.WebResponse{
+		Code:    fiber.StatusOK,
+		Status:  true,
+		Message: "Reset successfully.",
 	})
 }

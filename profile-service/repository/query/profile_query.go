@@ -15,9 +15,10 @@ type ProfileQuery interface {
 	CreateUser(c context.Context, tx pgx.Tx, user domain.User) error
 	UpdateMyProfile(c context.Context, tx pgx.Tx, id string, user domain.User) (domain.User, error)
 	FindUserNotDeleteByQuery(c context.Context, db *pgxpool.Pool, query, value string) (domain.User, error) // forgot-pass
-	// CheckTokenWithQuery(ctx context.Context, db pgx.Tx, query, value string) (domain.ResetPasswordToken, error)
-	// AddToken(ctx context.Context, db pgx.Tx, tokens domain.ResetPasswordToken) error
-	// UpdateToken(ctx context.Context, db pgx.Tx, tokens domain.ResetPasswordToken) error
+	CheckTokenWithQuery(ctx context.Context, db pgx.Tx, query, value string) (domain.ResetPasswordToken, error)
+	AddToken(ctx context.Context, db pgx.Tx, tokens domain.ResetPasswordToken) error
+	UpdateToken(ctx context.Context, db pgx.Tx, tokens domain.ResetPasswordToken) error
+	UpdatePassword(c context.Context, tx pgx.Tx, user domain.User) error
 }
 
 type ProfileQueryImpl struct {
@@ -89,13 +90,15 @@ func (repository *ProfileQueryImpl) FindUserNotDeleteByQuery(c context.Context, 
 
 func (repository *ProfileQueryImpl) UpdateMyProfile(c context.Context, tx pgx.Tx, id string, user domain.User) (domain.User, error) {
 	var data domain.User
-	query := "UPDATE users SET name = $1, email = $2, phone = $3 WHERE id = $4"
+
+	query := "UPDATE users SET name = $1, email = $2, phone = $3, updated_at = $4 WHERE id = $5"
+
 	_, err := tx.Prepare(context.Background(), "update_profile", query)
 	if err != nil {
 		return domain.User{}, err
 	}
-
-	_, err = tx.Exec(context.Background(), "update_profile", user.Name, user.Email, user.Phone, id)
+	
+	_, err = tx.Exec(context.Background(), "update_profile", user.Name, user.Email, user.Phone, user.UpdatedAt, id)
 	if err != nil {
 		return domain.User{}, err
 	}
@@ -129,46 +132,62 @@ func (repository *ProfileQueryImpl) UpdateMyProfile(c context.Context, tx pgx.Tx
 // }
 
 // Token
-// func (repository *ProfileQueryImpl) CheckTokenWithQuery(ctx context.Context, db pgx.Tx, query, value string) (domain.ResetPasswordToken, error) {
-// 	queryStr := fmt.Sprintf("SELECT * FROM %s WHERE %s = '%s'", "reset_token", query, value)
+func (repository *ProfileQueryImpl) CheckTokenWithQuery(ctx context.Context, db pgx.Tx, query, value string) (domain.ResetPasswordToken, error) {
+	queryStr := fmt.Sprintf("SELECT * FROM %s WHERE %s = '%s'", "reset_token", query, value)
 
-// 	user := db.QueryRow(context.Background(), queryStr)
+	user := db.QueryRow(context.Background(), queryStr)
 
-// 	var data domain.ResetPasswordToken
-// 	err := user.Scan(&data.Id, &data.Tokens, &data.Email, &data.Attempt, &data.LastAttempt)
-// 	if err != nil {
-// 		return domain.ResetPasswordToken{}, err
-// 	}
+	var data domain.ResetPasswordToken
+	err := user.Scan(&data.Id, &data.Tokens, &data.Email, &data.Attempt, &data.LastAttempt)
+	if err != nil {
+		return domain.ResetPasswordToken{}, err
+	}
 
-// 	return data, nil
-// }
+	return data, nil
+}
 
-// func (repository *ProfileQueryImpl) AddToken(ctx context.Context, db pgx.Tx, tokens domain.ResetPasswordToken) error {
-// 	query := fmt.Sprintf("INSERT INTO %s (id, tokens, email, attempt, last_attempt) VALUES($1,$2,$3,$4, $5)", "reset_token")
-// 	_, err := db.Prepare(context.Background(), "add_token", query)
-// 	if err != nil {
-// 		return err
-// 	}
+func (repository *ProfileQueryImpl) AddToken(ctx context.Context, db pgx.Tx, tokens domain.ResetPasswordToken) error {
+	query := fmt.Sprintf("INSERT INTO %s (id, tokens, email, attempt, last_attempt) VALUES($1,$2,$3,$4, $5)", "reset_token")
+	_, err := db.Prepare(context.Background(), "add_token", query)
+	if err != nil {
+		return err
+	}
 
-// 	_, err = db.Exec(context.Background(), "add_token", tokens.Id, tokens.Tokens, tokens.Email, tokens.Attempt, tokens.LastAttempt)
-// 	if err != nil {
-// 		return err
-// 	}
+	_, err = db.Exec(context.Background(), "add_token", tokens.Id, tokens.Tokens, tokens.Email, tokens.Attempt, tokens.LastAttempt)
+	if err != nil {
+		return err
+	}
 
-// 	return nil
-// }
+	return nil
+}
 
-// func (repository *ProfileQueryImpl) UpdateToken(ctx context.Context, db pgx.Tx, tokens domain.ResetPasswordToken) error {
-// 	query := fmt.Sprintf("UPDATE %s SET tokens = $1, attempt = $2, last_attempt = $3 WHERE email = $4", "reset_token")
-// 	_, err := db.Prepare(context.Background(), "update_token", query)
-// 	if err != nil {
-// 		return err
-// 	}
+func (repository *ProfileQueryImpl) UpdateToken(ctx context.Context, db pgx.Tx, tokens domain.ResetPasswordToken) error {
+	query := fmt.Sprintf("UPDATE %s SET tokens = $1, attempt = $2, last_attempt = $3 WHERE email = $4", "reset_token")
+	_, err := db.Prepare(context.Background(), "update_token", query)
+	if err != nil {
+		return err
+	}
 
-// 	_, err = db.Exec(context.Background(), "update_token", tokens.Tokens, tokens.Attempt, tokens.LastAttempt, tokens.Email)
-// 	if err != nil {
-// 		return err
-// 	}
+	_, err = db.Exec(context.Background(), "update_token", tokens.Tokens, tokens.Attempt, tokens.LastAttempt, tokens.Email)
+	if err != nil {
+		return err
+	}
 
-// 	return nil
-// }
+	return nil
+}
+
+
+func (repository *ProfileQueryImpl) UpdatePassword(c context.Context, tx pgx.Tx, user domain.User) error {
+	query := "UPDATE users SET password = $1, updated_at = $2 WHERE id = $3"
+	_, err := tx.Prepare(context.Background(), "update_pass", query)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.Exec(context.Background(), "update_pass", user.Password, user.UpdatedAt, user.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

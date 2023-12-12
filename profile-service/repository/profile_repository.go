@@ -14,9 +14,10 @@ type ProfileRepository interface {
 	CreateUser(c context.Context, user domain.User) error
 	UpdateMyProfileTx(ctx context.Context, id string, user domain.User) (domain.User, error)
 	FindUserNotDeleteByQueryTx(ctx context.Context, query, value string) (domain.User, error) // bisa dipake forgot-pass
-	// CheckTokenWithQueryTx(ctx context.Context, query, value string) (domain.ResetPasswordToken, error)
-	// AddTokenTx(ctx context.Context, token domain.ResetPasswordToken) error
-	// UpdateTokenTx(ctx context.Context, token domain.ResetPasswordToken) error
+	CheckTokenWithQueryTx(ctx context.Context, query, value string) (domain.ResetPasswordToken, error)
+	AddTokenTx(ctx context.Context, token domain.ResetPasswordToken) error
+	UpdateTokenTx(ctx context.Context, token domain.ResetPasswordToken) error
+	UpdatePasswordTx(ctx context.Context, user domain.User) error
 
 	// -1
 	// FindUserWithNameNotDeleteByQueryTx(ctx context.Context, query, value string) (domain.UserWithName, error)
@@ -89,52 +90,69 @@ func (r *profileRepository) UpdateMyProfileTx(ctx context.Context, id string, us
 }
 
 // Token
-// func (r *profileRepository) CheckTokenWithQueryTx(ctx context.Context, query, value string) (domain.ResetPasswordToken, error) {
+func (r *profileRepository) CheckTokenWithQueryTx(ctx context.Context, query, value string) (domain.ResetPasswordToken, error) {
 
-// 	var data domain.ResetPasswordToken
-// 	var err error
+	var data domain.ResetPasswordToken
+	var err error
 
-// 	err = r.db.WithTransaction(ctx, func(tx pgx.Tx) error {
-// 		data, err = r.ProfileQuery.CheckTokenWithQuery(ctx, tx, query, value)
-// 		if err != nil {
-// 			return err
-// 		}
+	err = r.db.WithTransaction(ctx, func(tx pgx.Tx) error {
+		data, err = r.ProfileQuery.CheckTokenWithQuery(ctx, tx, query, value)
+		if err != nil {
+			return err
+		}
 
-// 		return nil
-// 	})
+		return nil
+	})
 
-// 	return data, err
-// }
+	return data, err
+}
 
-// func (r *profileRepository) AddTokenTx(ctx context.Context, token domain.ResetPasswordToken) error {
+func (r *profileRepository) AddTokenTx(ctx context.Context, token domain.ResetPasswordToken) error {
 
-// 	var err error
-// 	err = r.db.WithTransaction(ctx, func(tx pgx.Tx) error {
+	var err error
+	err = r.db.WithTransaction(ctx, func(tx pgx.Tx) error {
 
-// 		err = r.ProfileQuery.AddToken(ctx, tx, token)
-// 		if err != nil {
-// 			return err
-// 		}
+		err = r.ProfileQuery.AddToken(ctx, tx, token)
+		if err != nil {
+			return err
+		}
 
-// 		return nil
-// 	})
+		return nil
+	})
 
-// 	return err
-// }
+	return err
+}
 
-// func (r *profileRepository) UpdateTokenTx(ctx context.Context, token domain.ResetPasswordToken) error {
+func (r *profileRepository) UpdateTokenTx(ctx context.Context, token domain.ResetPasswordToken) error {
 
-// 	var err error
+	var err error
 
-// 	err = r.db.WithTransaction(ctx, func(tx pgx.Tx) error {
+	err = r.db.WithTransaction(ctx, func(tx pgx.Tx) error {
 
-// 		err = r.ProfileQuery.UpdateToken(ctx, tx, token)
-// 		if err != nil {
-// 			return err
-// 		}
+		err = r.ProfileQuery.UpdateToken(ctx, tx, token)
+		if err != nil {
+			return err
+		}
 
-// 		return nil
-// 	})
+		return nil
+	})
 
-// 	return err
-// }
+	return err
+}
+
+func (r *profileRepository) UpdatePasswordTx(ctx context.Context, user domain.User) error {
+
+	var err error
+
+	err = r.db.WithTransaction(ctx, func(tx pgx.Tx) error {
+
+		err = r.ProfileQuery.UpdatePassword(ctx, tx, user)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return err
+}

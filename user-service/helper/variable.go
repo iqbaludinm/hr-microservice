@@ -23,4 +23,6 @@ var (
 	SafetyCheckID      = utils.GetEnv("SAFETY_CHECK_ID")
 	gotenbergEndpoint  = utils.GetEnv("GOTENBERG_ENDPOINT")
 
+	// reset-pass
+	UrlReset = utils.GetEnv("URL_RESET_PASSWORD_LOCAL")
 )

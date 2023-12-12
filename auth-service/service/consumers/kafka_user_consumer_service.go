@@ -3,6 +3,7 @@ package consumers
 import (
 	"context"
 	"encoding/json"
+	"time"
 
 	"github.com/iqbaludinm/hr-microservice/auth-service/model/domain"
 	"github.com/iqbaludinm/hr-microservice/auth-service/model/kafkamodel"
@@ -13,6 +14,7 @@ import (
 type KafkaAuthConsumerService interface {
 	Insert(message []byte) error
 	Update(message []byte) error
+	UpdatePass(message []byte) error
 	// Delete(message []byte) error
 }
 
@@ -65,8 +67,32 @@ func (s *kafkaAuthConsumerService) Update(message []byte) error {
 		ID:          userMsg.ID,
 		Name:         userMsg.Name,
 		Email:        userMsg.Email,
+		Password:     userMsg.Password,
 		Phone:        userMsg.Phone,
+		CreatedAt:    userMsg.CreatedAt,
 		UpdatedAt:    userMsg.UpdatedAt,
+		DeletedAt:    userMsg.DeletedAt,
+	}
+
+	// update user
+	if err := s.authRepository.UpdatePasswordTx(context.TODO(), user); err != nil {
+		s.logger.Errorw("error kafka update user consumer:", "error", err.Error())
+	}
+
+	return nil
+}
+
+func (s *kafkaAuthConsumerService) UpdatePass(message []byte) error {
+	userMsg := new(kafkamodel.KafkaUserMessage)
+
+	if err := json.Unmarshal(message, userMsg); err != nil {
+		s.logger.Errorw("error kafka update user consumer:", "error", err.Error())
+	}
+
+	user := domain.User{
+		ID: userMsg.ID,
+		Password:  userMsg.Password,
+		UpdatedAt: time.Now(),
 	}
 
 	// update user

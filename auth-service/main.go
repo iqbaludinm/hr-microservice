@@ -137,6 +137,11 @@ func main() {
 					if err != nil {
 						logger.Panic(err)
 					}
+				case `[method="PUT.USER_PASS"]`:
+					err := kafkaUserConsumerService.UpdatePass(e.Value)
+					if err != nil {
+						logger.Panic(err)
+					}
 				// case `[method="DELETE.USER"]`:
 				// 	err := kafkaUserConsumerService.Delete(e.Value)
 				// 	if err != nil {

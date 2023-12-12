@@ -18,8 +18,12 @@ type UserRepository interface {
 	FindById(c context.Context, id string, filter domain.UserQueryFilter) (domain.User, error)
 	FindByPhoneNumber(c context.Context, phone string) (domain.User, error)
 	FindByEmail(c context.Context, email string) (domain.User, error)
-	
+	FindUserNotDeleteByQueryTx(ctx context.Context, query, value string) (domain.User, error)
+	CheckTokenWithQueryTx(ctx context.Context, query, value string) (domain.ResetPasswordToken, error)
 	CountAllUser(c context.Context, filter domain.UserQueryFilter) (int, error)
+	AddTokenTx(ctx context.Context, token domain.ResetPasswordToken) error
+	UpdateTokenTx(ctx context.Context, token domain.ResetPasswordToken) error
+	UpdatePasswordTx(ctx context.Context, user domain.User) error
 }
 
 type userRepository struct {
@@ -168,4 +172,90 @@ func (r *userRepository) CountAllUser(c context.Context, filter domain.UserQuery
 	})
 
 	return count, err
+}
+
+
+func (r *userRepository) FindUserNotDeleteByQueryTx(ctx context.Context, query, value string) (domain.User, error) {
+
+	var data domain.User
+	var err error
+
+	err = r.db.WithoutTransaction(ctx, func(db *pgxpool.Pool) error {
+		data, err = r.UserQuery.FindUserNotDeleteByQuery(ctx, db, query, value)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return data, err
+}
+
+// Token
+func (r *userRepository) CheckTokenWithQueryTx(ctx context.Context, query, value string) (domain.ResetPasswordToken, error) {
+
+	var data domain.ResetPasswordToken
+	var err error
+
+	err = r.db.WithTransaction(ctx, func(tx pgx.Tx) error {
+		data, err = r.UserQuery.CheckTokenWithQuery(ctx, tx, query, value)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return data, err
+}
+
+func (r *userRepository) AddTokenTx(ctx context.Context, token domain.ResetPasswordToken) error {
+
+	var err error
+	err = r.db.WithTransaction(ctx, func(tx pgx.Tx) error {
+
+		err = r.UserQuery.AddToken(ctx, tx, token)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return err
+}
+
+func (r *userRepository) UpdateTokenTx(ctx context.Context, token domain.ResetPasswordToken) error {
+
+	var err error
+
+	err = r.db.WithTransaction(ctx, func(tx pgx.Tx) error {
+
+		err = r.UserQuery.UpdateToken(ctx, tx, token)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return err
+}
+
+func (r *userRepository) UpdatePasswordTx(ctx context.Context, user domain.User) error {
+
+	var err error
+
+	err = r.db.WithTransaction(ctx, func(tx pgx.Tx) error {
+
+		err = r.UserQuery.UpdatePassword(ctx, tx, user)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	return err
 }

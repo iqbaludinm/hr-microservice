@@ -10,14 +10,24 @@ type CreateUserRequest struct {
 }
 
 type UpdateProfileRequest struct {
-	Name      string `json:"name"`
-	Email     string `json:"email" validate:"email"`
-	Phone     string `json:"phone" `
+	Name      string    `json:"name"`
+	Email     string    `json:"email" validate:"email"`
+	Password  string    `json:"password"`
+	Phone     string    `json:"phone" `
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type UpdateUserPasswordRequest struct {
 	Password string `json:"password" validate:"min:6"`
+}
+
+type ForgetPassword struct {
+	Email string `json:"email" validate:"required"`
+}
+
+type ResetPassword struct {
+	Password        string `json:"password" validate:"required"`
+	PasswordConfirm string `json:"password_confirm" validate:"required"`
 }
 
 type UserQueryFilter struct {

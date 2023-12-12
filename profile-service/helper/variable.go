@@ -26,4 +26,7 @@ var (
 	CategoryService   = utils.GetEnv("CATEGORY_SERVICE")
 	
 	DefaultLimit, _    = strconv.Atoi(utils.GetEnv("DEFAULT_LIMIT"))
+	
+	// reset-pass
+	UrlReset = utils.GetEnv("URL_RESET_PASSWORD_LOCAL")
 )

@@ -10,9 +10,10 @@ import (
 )
 
 type Claims struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
-	Phone string `json:"phone"`
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
 	Password string `json:"password"`
 	jwt.StandardClaims
 }
@@ -20,9 +21,9 @@ type Claims struct {
 func GenerateJwt(issuer, name, email, phone, password string) (string, error) {
 	session, _ := strconv.Atoi(config.SessionLogin)
 	claims := &Claims{
-		Name: name,
-		Email: email,
-		Phone: phone,
+		Name:     name,
+		Email:    email,
+		Phone:    phone,
 		Password: password,
 		StandardClaims: jwt.StandardClaims{
 			Issuer:    issuer,
@@ -47,10 +48,10 @@ func ParseJwt(cookie string) (string, string, error) {
 }
 
 // refresh
-func GenerateRefreshJwt(issuer, name, email ,phone string) (string, error) {
+func GenerateRefreshJwt(issuer, name, email, phone string) (string, error) {
 	session, _ := strconv.Atoi(config.SessionRefreshToken)
 	claims := &Claims{
-		Name: name,
+		Name:  name,
 		Email: email,
 		Phone: phone,
 		StandardClaims: jwt.StandardClaims{
